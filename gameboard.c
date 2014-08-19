@@ -29,7 +29,7 @@ void display_gameboard(enum cell_contents board[][BOARDWIDTH])
 {
 	int i, j, k;
 	
-	//TODO: replace output later
+	/*TODO: replace output later */
 	printf("     |");
 	for( j=0; j<BOARDWIDTH; j++){
       printf("  %d  |", j);

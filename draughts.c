@@ -47,7 +47,7 @@ int main (int argc, char *argv[])
 				reset_scoreboard(scoreboard);
 				break;
 			case EXIT:
-				printf("Thanks for playing.");
+				printf("Thanks for playing.\n");
 				break;
 			default:
 				printf("Invalid option, please try again.\n");

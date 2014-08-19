@@ -10,7 +10,7 @@
 #include "game.h"
 
 #define POS_LEN 50
-#define CTRL_D 4
+
 
 Colour get_colour() {
   static int res = NULL;
@@ -83,7 +83,6 @@ void play_game(char * player_one, char * player_two,
 /* token position */
 BOOLEAN get_pos(char *loc, Move *m) {
 	 
-    int i,j,k,l;
     char *tok = NULL;
     char ori_str[STRING_INPUT_LENGTH+1];
     char dst_str[STRING_INPUT_LENGTH+1];
