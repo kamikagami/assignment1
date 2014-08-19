@@ -8,14 +8,12 @@
  * Start up code provided by Paul Miller and Virginia King
  **********************************************************************/
 #include "game.h"
-#include <time.h>
-#include <stdlib.h>
 
 #define POS_LEN 50
 #define CTRL_D 4
 
 Colour get_colour() {
-  static int res = -1;
+  static int res = NULL;
   if ( res == P_RED ) {
 	res = P_WHITE;
 	return res;  
@@ -82,13 +80,13 @@ void play_game(char * player_one, char * player_two,
 
 }
 
-
+/* token position */
 BOOLEAN get_pos(char *loc, Move *m) {
 	 
     int i,j,k,l;
     char *tok = NULL;
-    char ori_str[30];
-    char dst_str[30];
+    char ori_str[STRING_INPUT_LENGTH+1];
+    char dst_str[STRING_INPUT_LENGTH+1];
     char *current_player;
     char *dash = {"-"};
     char *comma = {","}; 
@@ -143,7 +141,7 @@ BOOLEAN get_pos(char *loc, Move *m) {
 }
 
 
-
+/* display gameboard after every valid move */
 void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
   
   /* set dst */
@@ -152,7 +150,7 @@ void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
   else
    board[m.end.x][m.end.y] = WHITE;
    
-  /* clr ori */
+  /* clear ori */
   board[m.start.x][m.start.y] = EMPTY;
   
   display_gameboard(board);
@@ -201,9 +199,9 @@ enum move_type is_valid_move(struct move next_move,
 	Location sample_dst1, sample_dst2;
 	
     /* if ori valid */
-    if ( next_move.start.x >7 || next_move.start.x < 0 )
+    if ( next_move.start.x > BOARDWIDTH || next_move.start.x < 0 )
       return INVALID;
-    if ( next_move.start.y >7 || next_move.start.y < 0 )
+    if ( next_move.start.y > BOARDHEIGHT || next_move.start.y < 0 )
       return INVALID;
     
     if ( current->col == P_RED && board[next_move.start.x][next_move.start.y] == RED ) {}
@@ -217,9 +215,9 @@ enum move_type is_valid_move(struct move next_move,
     if ( board[next_move.end.x][next_move.end.y] != EMPTY ) {
 	  return INVALID;
 	}
-    if ( next_move.end.x >7 || next_move.end.x < 0 )
+    if ( next_move.end.x > BOARDWIDTH || next_move.end.x < 0 )
       return INVALID;
-    if ( next_move.end.y >7 || next_move.end.y < 0 )
+    if ( next_move.end.y > BOARDHEIGHT || next_move.end.y < 0 )
       return INVALID;
     
     sample_dst1.x = next_move.start.x + 1;
@@ -235,7 +233,7 @@ enum move_type is_valid_move(struct move next_move,
     else
       return INVALID;          
     
-    /* to be immplemented: attack */
+    /* TODO attack and King */
     
     
     return NORMAL;

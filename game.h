@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include "gameboard.h"
 #include "scoreboard.h"
+#include "utility.h"
 
 #define MOVE_LEN 8
 #define INPUT_LEN 1
