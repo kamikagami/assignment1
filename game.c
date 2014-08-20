@@ -11,7 +11,6 @@
 
 #define POS_LEN 50
 
-
 Colour get_colour() {
   static int res = NULL;
   if ( res == P_RED ) {

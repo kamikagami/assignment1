@@ -22,7 +22,7 @@ int main (int argc, char *argv[])
     char replayPrompt[] = {"Replay? (y for yes): "};
     char *name_prompt1 = {"Please input player 1's name: "};
     char *name_prompt2 = {"Please input player 2's name: "};
-    char *menuHeader = {"English Draughts - Main Menu"};
+    char *menuHeader = {"\nEnglish Draughts - Main Menu"};
     char *menuOpt[MENU_OPTIONS] = {
 		 "Play Game", "Display Winners", "Reset scoreboard", "Quit"};
 	char *inputPrompt = {"Please select (1-4): "};

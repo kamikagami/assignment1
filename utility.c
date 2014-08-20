@@ -26,7 +26,8 @@ void read_rest_of_line(void)
  *
  * Function courtesy of Steven Burrows (sdb@cs.rmit.edu.au)
  * Available on Blackboard as getInteger-basic.c 
- * and getString-basic.c
+ * and getString-basic.
+ * add a senario when sending ctrl-D
  */
 int getInt(int* num, unsigned length, char* prompt, int min, int max)
 {
