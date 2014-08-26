@@ -185,14 +185,32 @@ void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
 	/* It's an attack */
 	mid_x = (int)m.start.x + ((int)m.end.x - (int)m.start.x)/2;
 	mid_y = (int)m.start.y + ((int)m.end.y - (int)m.start.y)/2;
-    printf("%d, %d\n", m.start.x, m.start.y);
-    printf("%d, %d\n", m.end.x, m.end.y);
-    
-    printf("%d, %d\n", mid_x, mid_y );
 	board[mid_x][mid_y] = EMPTY; 	   
   }
   display_gameboard(board);
    
+}
+
+
+BOOLEAN continue_attack() {
+	
+ char pos_str[POS_LEN];
+ char attack_again[] = { "You attacked! Would you like to attempt a further attack move\
+with this token? [y for yes, n for no or press enter or ctrl-D\
+to quit the current game]:" };
+ 
+ while(TRUE) {
+   getString(pos_str, POS_LEN, attack_again); 
+   if ( strcmp(pos_str, "y") == 0 ||
+		strcmp(pos_str, "n") == 0 ) {
+	    printf("Please input 'y' or 'n'\n");
+	  break;	  
+   }
+ }
+ if ( strcmp(pos_str, "n") == 0 )
+   return FALSE; 
+ else 
+   return TRUE;
 }
 
 /* Requirement 5 - Handles the logic for the player's turn*/
@@ -200,13 +218,14 @@ enum str_result player_turn(struct player * current,
     enum cell_contents board[][BOARDWIDTH])
 {
    enum move_type mt;
-   Move m;
+   Move m, attampt_m;
    int res;
    char pos_str[POS_LEN];
    char turn_prompt[PROMPT_LENGTH];
    char prompt[] =  {"%sIt is %s's turn.\
  Please enter a move(e.g. 2,0-3,1) [press enter or ctrl-D to\
  quite the current game]: "};
+  
     
    if ( current->col == P_RED ) 
      sprintf(turn_prompt, prompt, "[Red Colour]" ,current->name);
@@ -214,18 +233,69 @@ enum str_result player_turn(struct player * current,
      sprintf(turn_prompt, prompt, "[White Colour]" ,current->name);
    
  
-   getString(pos_str, POS_LEN, turn_prompt);
-   if ( strchr(pos_str, CTRL_D) != NULL ){ /* user input Ctrl + D */
-       return RTM;
-   }
-   res = get_pos(pos_str, &m);
-   mt = is_valid_move(m, current, board);
-   if (!res || mt == INVALID) {
-	   printf("Pleaes input again.\n"); 
-	   return FAILURE;
-   }
+   while(TRUE) { 
+	   
+       getString(pos_str, POS_LEN, turn_prompt);
+       if ( strchr(pos_str, CTRL_D) != NULL ){ /* user input Ctrl + D */
+           return RTM;
+       }
+       res = get_pos(pos_str, &m);
+       mt = is_valid_move(m, current, board);
+       if (!res || mt == INVALID) {
+	       printf("Pleaes input again.\n"); 
+	       return FAILURE;
+       }
    
-   update_board(m, current->col, board);
+       update_board(m, current->col, board);
+   
+       if ( mt == ATTACK ) {
+	      attampt_m.start.x = m.end.x;
+	      attampt_m.start.y = m.end.y;
+	  
+	      /* Case 1 */
+	      attampt_m.end.x = attampt_m.start.x + 2;
+	      attampt_m.end.y = attampt_m.start.y - 2;
+	      if ( is_valid_move(attampt_m, current, board) == ATTACK ) {		 
+            if ( continue_attack() ) 
+              continue;
+            else
+              break;
+		  }	
+		
+	      /* Case 2 */
+		  attampt_m.end.x = attampt_m.start.x + 2;
+	      attampt_m.end.y = attampt_m.start.y + 2;
+	      if ( is_valid_move(attampt_m, current, board) == ATTACK ) {
+			if ( continue_attack() ) 
+              continue;
+            else
+              break; 
+			  
+	      }		
+	        
+	      /* Case 3 */
+	     attampt_m.end.x = attampt_m.start.x - 2;
+	     attampt_m.end.y = attampt_m.start.y - 2;
+	     if ( is_valid_move(attampt_m, current, board) == ATTACK ) {  
+		    if ( continue_attack() ) 
+              continue;
+            else
+              break;  	   
+	     }
+	     
+	     /* Case 4 */
+	     attampt_m.end.x = attampt_m.start.x - 2;
+	     attampt_m.end.y = attampt_m.start.y + 2;
+	     if ( is_valid_move(attampt_m, current, board) == ATTACK ) {  
+		    if ( continue_attack() ) 
+              continue;
+            else
+              break;  	   
+	     }  
+	  } 
+	  
+	  break;  
+    } /* while */
    return SUCCESS;
 }
 
