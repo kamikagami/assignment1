@@ -183,8 +183,12 @@ void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
   if ( abs(m.end.x - m.start.x) == 2 &&
        abs(m.end.y - m.start.y) == 2 ) {
 	/* It's an attack */
-	mid_x = m.start.x + (m.end.x - m.start.x)/2;
-	mid_y = m.start.y + (m.end.y - m.start.y)/2;
+	mid_x = (int)m.start.x + ((int)m.end.x - (int)m.start.x)/2;
+	mid_y = (int)m.start.y + ((int)m.end.y - (int)m.start.y)/2;
+    printf("%d, %d\n", m.start.x, m.start.y);
+    printf("%d, %d\n", m.end.x, m.end.y);
+    
+    printf("%d, %d\n", mid_x, mid_y );
 	board[mid_x][mid_y] = EMPTY; 	   
   }
   display_gameboard(board);
