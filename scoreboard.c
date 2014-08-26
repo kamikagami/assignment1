@@ -22,7 +22,12 @@ void init_scoreboard(struct result * scoreboard)
 void add_to_scoreboard(struct result * scoreboard, 
     struct result * latest_game)
 {
-	int index = 0;
+    int len = 0;
+    /*
+     *   strlen(scoreboard[0].won)
+     * /
+	
+	
     /* Delete this comment and write your own comments and code here*/
 }
 

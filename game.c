@@ -10,6 +10,8 @@
 #include "game.h"
 
 #define POS_LEN 10
+#define P1 0
+#define P2 1
 
 /* assign colour */
 Colour get_colour() {
@@ -37,8 +39,6 @@ Colour get_colour() {
  }
 }
 
-#define P1 0
-#define P2 1
 
 /* Requirement 7 - Controls the flow of play in the game*/
 void play_game(char * player_one, char * player_two, 
@@ -356,11 +356,11 @@ enum move_type is_valid_move(struct move next_move,
 	}
 	
     if ( next_move.end.x > BOARDWIDTH || next_move.end.x < MIN_WIDTH ) {
-      printf("Please input the move less than the maximum range ");
+      printf("Please input the move less than the maximum range.\n");
       return INVALID;
     }
     if ( next_move.end.y > BOARDHEIGHT || next_move.end.y < MIN_WIDTH ) {
-      printf("Please input the move less than the maximum range ");
+      printf("Please input the move less than the maximum range.\n");
       return INVALID;
     }
     
@@ -425,7 +425,7 @@ enum move_type is_valid_move(struct move next_move,
        
 	   if ( next_move.end.x == attack_sample_dst1.x && next_move.end.y == attack_sample_dst1.y ) {
 	     if ( board[attack_sample_dst1.x][attack_sample_dst1.y] != EMPTY ) {
-			/* TODO: Print */
+			printf("There is token at your destination\n");
 			return INVALID;
 		 }
 	
@@ -435,7 +435,7 @@ enum move_type is_valid_move(struct move next_move,
 		    return ATTACK;
 		 }
 		 else {
-		   /* TODO: Print */
+		   printf("You can't attack your own token!\n");
 		   return INVALID;
 		 }
 		 
@@ -443,7 +443,7 @@ enum move_type is_valid_move(struct move next_move,
 	   }
        else if ( next_move.end.x == attack_sample_dst2.x && next_move.end.y == attack_sample_dst2.y ) {
 		 if ( board[attack_sample_dst2.x][attack_sample_dst2.y] != EMPTY ) {
-			/* TODO: Print */
+			printf("There is token at your destination\n");
 			return INVALID;
 		 }  
 		   
@@ -455,7 +455,7 @@ enum move_type is_valid_move(struct move next_move,
 		      return ATTACK;
 		   }
 		   else {
-		     /* TODO: Print */
+		     printf("You can't attack your own token!\n");
 		     return INVALID;
 		   } 
 	    }
@@ -471,7 +471,7 @@ enum move_type is_valid_move(struct move next_move,
 	     if ( next_move.end.x == attack_sample_dst3.x && next_move.end.y == attack_sample_dst3.y ){
 			/* sample 3 */
 			if ( board[attack_sample_dst3.x][attack_sample_dst3.y] != EMPTY ) {
-			   /* TODO: Print */
+			   printf("There is token at your destination\n");
 			   return INVALID;
 		    }   
 			  
@@ -480,14 +480,14 @@ enum move_type is_valid_move(struct move next_move,
 		      return ATTACK;
 		   }
 		   else {
-		      /* TODO: Print */
+		      printf("You can't attack your own token!\n");
 		      return INVALID;
 		   }
 	     }
          else if ( next_move.end.x == attack_sample_dst4.x && next_move.end.y == attack_sample_dst4.y ) {
 	       /* sample 4 */
 	       if ( board[attack_sample_dst4.x][attack_sample_dst4.y] != EMPTY ) {
-			   /* TODO: Print */
+			   printf("There is token at your destination\n");
 			   return INVALID;
 		    }   
 	       
@@ -496,7 +496,7 @@ enum move_type is_valid_move(struct move next_move,
 		       return ATTACK;
 		   }
 		   else {
-		      /* TODO: Print */
+		      printf("You can't attack your own token!\n");
 		      return INVALID;
 		   }
 	       
