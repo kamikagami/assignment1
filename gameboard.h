@@ -12,6 +12,7 @@
 
 #include "utility.h"
 
+#define MIN_WIDTH 0
 #define BOARDWIDTH 8
 #define BOARDHEIGHT  BOARDWIDTH
 #define WHITE_DISPLAY "\x1b[39m" "o"

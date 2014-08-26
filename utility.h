@@ -26,7 +26,7 @@
 
 /*used for getString()*/
 #define STRING_INPUT_LENGTH 20
-#define CTRL_D (char)4
+#define CTRL_D (char) 4
 
 void read_rest_of_line(void);
 int getInt(int* in, unsigned len, char* prompt, int min, int max);

@@ -21,6 +21,8 @@ struct result
     char lost[MAX_NAME_LEN+1];
 };
 
+typedef struct result Result;
+
 /* Req 2 -Initialises the scoreboard and sets all the strings to be 
  * empty*/
 void init_scoreboard(struct result * scoreboard);

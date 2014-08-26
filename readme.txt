@@ -13,4 +13,12 @@
  functionality, reasoning for design choices etc. */
 
 
- get reference from blackboard
+I get the reference from blackboard example like getString() and getInt()
+and make some slight changes.
+
+For randomise the colour, since it is a little bit hard to randomise 
+between 0 and 1,
+I decided to make it random the number between 1 to 10, and set 5 as 
+the random point(I don't know if this is a real word though), which means
+the number between 1-5 will get the WHITE colour and the number between 
+6-10 will get the RED colour.

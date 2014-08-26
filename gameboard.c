@@ -14,8 +14,8 @@ void init_gameboard(enum cell_contents board[][BOARDWIDTH])
 {
 	
 	int i, j;
-	for( i=0; i<BOARDHEIGHT; i++) {
-	  for( j=0; j<BOARDWIDTH; j++ ) {
+	for( i = 0; i < BOARDHEIGHT; i++) {
+	  for( j = 0; j < BOARDWIDTH; j++ ) {
 		board[i][j] = master_board[i][j];
 	  }
 	}
@@ -31,19 +31,19 @@ void display_gameboard(enum cell_contents board[][BOARDWIDTH])
 	
 	/*TODO: replace output later */
 	printf("     |");
-	for( j=0; j<BOARDWIDTH; j++){
+	for( j = 0; j < BOARDWIDTH; j++){
       printf("  %d  |", j);
 	}
 	printf("\n");
-	for (k =0; k<8; k++) {
+	for (k = 0; k < BOARDWIDTH; k++) {
       printf("-------");  
 	}
 	printf("\n");
 	
 	
-    for( i=0; i<BOARDHEIGHT; i++) {
+    for( i = 0; i < BOARDHEIGHT; i++) {
 	  printf("  %d  |", i);
-	  for( j=0; j<BOARDWIDTH; j++ ) {
+	  for( j = 0; j < BOARDWIDTH; j++ ) {
 	
 		if ( board[i][j] == RED ) {
 		  printf("  %s  %s|", RED_DISPLAY, WHITE_RESET);
@@ -63,8 +63,8 @@ void display_gameboard(enum cell_contents board[][BOARDWIDTH])
 	  }
 	  printf("\n");
 	  
-	  /* TODO: Replace the magic number */
-	  for (k =0; k<8; k++) {
+	  
+	  for (k = 0; k < BOARDWIDTH; k++) {
 		printf("-------");  
 	  }
 	  printf("\n");

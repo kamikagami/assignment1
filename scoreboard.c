@@ -14,7 +14,7 @@
  * empty*/
 void init_scoreboard(struct result * scoreboard)
 {
-	memset(scoreboard, 0, sizeof(Player)*SCOREBOARDSIZE);
+	memset(scoreboard, 0, sizeof(Result)*SCOREBOARDSIZE);
     /* Delete this comment and write your own comments and code here*/
 }
 
@@ -22,6 +22,7 @@ void init_scoreboard(struct result * scoreboard)
 void add_to_scoreboard(struct result * scoreboard, 
     struct result * latest_game)
 {
+	int index = 0;
     /* Delete this comment and write your own comments and code here*/
 }
 
@@ -29,7 +30,8 @@ void add_to_scoreboard(struct result * scoreboard,
  * empty*/
 void reset_scoreboard(struct result * scoreboard)
 {
-	memset(scoreboard, 0, sizeof(Player)*SCOREBOARDSIZE);
+	memset(scoreboard, 0, sizeof(Result)*SCOREBOARDSIZE);
+	printf("\nReset Scoreboard Successfully.\n");
     /* Delete this comment and write your own comments and code here*/
 }
 
@@ -38,13 +40,25 @@ void reset_scoreboard(struct result * scoreboard)
 void display_scoreboard(struct result * scoreboard)
 {
 	int i = 0;
-	char sbHeading[] = {"SCOREBOARD"};
-	char winner[] = {"WINNER"};
-	char loser[] = {"LOSER"};
+	Result win, lose; 
+	char sbHeading[] =
+	 {"APT English Draughts Tournament - History of Games Played.\n"};
+	char winner[] = {"Winner"};
+	char loser[] = {"Loser"};
+	int nameLen = NAME_LEN+1;
 	
 	printf("%s\n", sbHeading);
 	for(i = 0; i <= strlen(sbHeading); i++)
-	printf("-");
+		printf("=");
+	printf("\n|%-*s|%-*s\n", nameLen, winner, nameLen, loser);
+	for(i = 0; i <= nameLen + nameLen; i++)
+		printf("-");
+	printf("\n");
+	
+	for(i = 0; i < SCOREBOARDSIZE; i++)
+		printf("\n|%-*s|%-*s\n,",nameLen, win.won, nameLen, lose.lost);
+	for(i = 0; i <= nameLen + nameLen; i++)
+		printf("-");
 	printf("\n");
 	
     /* Delete this comment and write your own comments and code here*/
