@@ -172,10 +172,24 @@ void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
   int mid_x, mid_y;
   
   /* set dst */
-  if ( col == P_RED ) 
-   board[m.end.x][m.end.y] = RED;
-  else
-   board[m.end.x][m.end.y] = WHITE;
+  if ( col == P_RED ) { 
+	if(m.end.x == BOARDHEIGHT -1 ) {
+	  /* become king */
+      board[m.end.x][m.end.y] = K_RED;
+    }
+    else {
+      board[m.end.x][m.end.y] = RED;
+	}
+  }
+  else {
+    if(m.end.x == MIN_WIDTH ) {
+	  /* become king */	
+      board[m.end.x][m.end.y] = K_WHITE;
+    }
+    else {
+	  board[m.end.x][m.end.y] = WHITE;
+	}
+  } 
    
   /* clear ori */
   board[m.start.x][m.start.y] = EMPTY;
@@ -187,6 +201,7 @@ void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
 	mid_y = (int)m.start.y + ((int)m.end.y - (int)m.start.y)/2;
 	board[mid_x][mid_y] = EMPTY; 	   
   }
+  
   display_gameboard(board);
    
 }
