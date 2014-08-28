@@ -14,9 +14,9 @@ int main (int argc, char *argv[])
     struct result scoreboard[SCOREBOARDSIZE];
     Player player1;
     Player player2;
-    Player *winner = NULL;
+    Result res;
     int input = 0;
-    char playAgain[INPUT_LEN+1];
+    char replay[INPUT_LEN+1];
     char player1_name[NAME_LEN+1];
     char player2_name[NAME_LEN+1];
     char replayPrompt[] = {"Replay? (y for yes): "};
@@ -27,7 +27,7 @@ int main (int argc, char *argv[])
 		 "Play Game", "Display Winners", "Reset scoreboard", "Quit"};
 	char *inputPrompt = {"Please select (1-4): "};
 	enum cell_contents board[BOARDWIDTH][BOARDHEIGHT];
-	
+	BOOLEAN play = FALSE;
 	while(input != EXIT)
 	{
 		printMenu(menuOpt, MENU_OPTIONS, menuHeader);
@@ -37,13 +37,22 @@ int main (int argc, char *argv[])
 			case PLAY_GAME:
 				getString(player1_name, NAME_LEN, name_prompt1);
 				getString(player2_name, NAME_LEN, name_prompt2);
-			    play_game(player1_name, player2_name, NULL);
+			    do{
+					play_game(player1_name, player2_name, &res);
+					add_to_scoreboard(scoreboard, &res);
+					getString(replay, INPUT_LEN+1, replayPrompt);
+					if(*replay == 'y')
+						play = TRUE;
+					else 
+						play = FALSE;
+				}while(play == TRUE);
 				break;
 			case DISPLAY_WINNERS:
 				printf("Display Winners\n");
 				display_scoreboard(scoreboard);
 				break;
 			case RESET_SCOREBOARD:
+				printf("\nReset Scoreboard Successfully.\n");
 				reset_scoreboard(scoreboard);
 				break;
 			case EXIT:

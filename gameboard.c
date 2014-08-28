@@ -12,15 +12,12 @@
 /* Copies the master board to a local copy for each game */
 void init_gameboard(enum cell_contents board[][BOARDWIDTH])
 {
-	
 	int i, j;
 	for( i = 0; i < BOARDHEIGHT; i++) {
 	  for( j = 0; j < BOARDWIDTH; j++ ) {
 		board[i][j] = master_board[i][j];
 	  }
 	}
-	
-
     /* Delete this comment and write your own comments and code here*/
 }
 
