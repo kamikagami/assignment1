@@ -581,7 +581,7 @@ BOOLEAN test_for_winner(struct player * next_player,
             for(j=0; j<BOARDHEIGHT; j++) {
                 if (board[i][j] == RED || board[i][j] == K_RED) {
                     /* case 1 */
-                    if ( i + 1 <= 7 && j -1 >=0 ) {
+                    if ( i+1 <= BOARDWIDTH-1 && j-1 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 1;
@@ -592,7 +592,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 2 */
-                    if ( i + 1 <= 7 && j + 1 <=7 ) {
+                    if ( i+1 < BOARDWIDTH  && j+1 < BOARDWIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 1;
@@ -603,7 +603,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 3 */
-                    if ( i + 2 <= 7 && j - 2 >=0 ) {
+                    if ( i+2 < BOARDWIDTH && j-2 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 2;
@@ -614,7 +614,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 4 */
-                    if ( i + 2 <= 7 && j + 2 <=-7 ) {
+                    if ( i+2 < BOARDWIDTH && j+2 < BOARDWIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 2;
@@ -629,7 +629,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                 if ( board[i][j] == K_RED) {
 
                     /* case 5 */    
-                    if ( i-1 >= 0 && j -1 >= 0 ) {
+			if ( i-1 >= MIN_WIDTH && j-1 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
 
@@ -641,7 +641,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 6 */     
-                    if ( i-1 >= 0 && j +1 <= 7 ) {
+                    if ( i-1 >= MIN_WIDTH && j+1 < BOARDWIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i - 1;
@@ -652,7 +652,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 7 */
-                    if ( i-2 >= 0 && j-2 >= 0 ) {    
+                    if ( i-2 >= MIN_WIDTH && j-2 >= MIN_WIDTH ) {    
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i - 2;
@@ -663,7 +663,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 8 */
-                    if ( i-2>= 0 && j+2 <= 7) {   
+                    if ( i-2>= MIN_WIDTH && j+2 < BOARDWIDTH) {   
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i - 2;
@@ -687,7 +687,7 @@ BOOLEAN test_for_winner(struct player * next_player,
             for(j=0; j<BOARDHEIGHT; j++) {
                 if (board[i][j] == WHITE) {
                     /* case 1 */    
-                    if ( i-1 >= 0 && j -1 >= 0 ) {
+                    if ( i-1 >= MIN_WIDTH && j-1 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i - 1;
@@ -698,7 +698,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 2 */   
-                    if ( i-1 >= 0 && j +1 <= 7 ) {  
+                    if ( i-1 >= MIN_WIDTH && j+1 < BOARDWIDTH ) {  
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i - 1;
@@ -709,7 +709,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 3 */ 
-                    if ( i-2 >= 0 && j-2 >= 0 ) {       
+                    if ( i-2 >= MIN_WIDTH && j-2 >= MIN_WIDTH ) {       
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i - 2;
@@ -720,7 +720,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 4 */     
-                    if ( i-2>= 0 && j+2 <= 7) {   
+                    if ( i-2>= MIN_WIDTH && j+2 < BOARDWIDTH ) {   
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i - 2;
@@ -734,7 +734,7 @@ BOOLEAN test_for_winner(struct player * next_player,
 
                 if ( board[i][j] == K_WHITE ) {
                     /* case 1 */
-                    if ( i + 1 <= 7 && j -1 >=0 ) {
+                    if ( i+1 < BOARDWIDTH && j-1 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 1;
@@ -745,7 +745,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 2 */
-                    if ( i + 1 <= 7 && j + 1 <=7 ) {
+                    if ( i+1 < BOARDWIDTH && j+1 < BOARDWIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 1;
@@ -756,7 +756,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                     /* case 3 */
-                    if ( i + 2 <= 7 && j - 2 >=0 ) {
+                    if ( i+2 < BOARDWIDTH && j-2 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 2;
@@ -768,7 +768,7 @@ BOOLEAN test_for_winner(struct player * next_player,
 
 
                     /* case 4 */
-                    if ( i + 2 <= 7 && j + 2 <=-7 ) {
+                    if ( i + 2 < BOARDWIDTH && j + 2 < BOARDWIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 2;
