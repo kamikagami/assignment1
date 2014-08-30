@@ -28,6 +28,9 @@ int main (int argc, char *argv[])
 	char *inputPrompt = {"Please select (1-4): "};
 	enum cell_contents board[BOARDWIDTH][BOARDHEIGHT];
 	BOOLEAN play = FALSE;
+	
+	init_scoreboard(scoreboard);
+	
 	while(input != EXIT)
 	{
 		printMenu(menuOpt, MENU_OPTIONS, menuHeader);

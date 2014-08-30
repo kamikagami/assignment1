@@ -78,7 +78,7 @@ void display_scoreboard(struct result * scoreboard)
 	printf("\n");
 	
 	for(i = 0; i < SCOREBOARDSIZE; i++)
-		printf("\n|%-*s|%-*s\n,",nameLen, scoreboard[i].won, nameLen, scoreboard[i].lost);
+		printf("\n|%-*s|%-*s\n",nameLen, scoreboard[i].won, nameLen, scoreboard[i].lost);
 	for(i = 0; i <= nameLen + nameLen; i++)
 		printf("-");
 	printf("\n");

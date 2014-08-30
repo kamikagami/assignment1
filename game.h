@@ -23,7 +23,7 @@
 
 struct location
 {
-    unsigned x, y;
+    unsigned x, y; 
 };
 
 struct move

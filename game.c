@@ -206,7 +206,12 @@ void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
             board[m.end.x][m.end.y] = K_RED;
         }
         else {
-            board[m.end.x][m.end.y] = RED;
+            if( board[m.start.x][m.start.y] == RED ) {
+              board[m.end.x][m.end.y] = RED;
+            }
+            else {
+              board[m.end.x][m.end.y] = K_RED;
+	    }
         }
     }
     else {
@@ -215,7 +220,13 @@ void update_board(Move m, Colour col, enum cell_contents board[][BOARDWIDTH]) {
             board[m.end.x][m.end.y] = K_WHITE;
         }
         else {
-            board[m.end.x][m.end.y] = WHITE;
+
+            if( board[m.start.x][m.start.y] == WHITE ) {
+              board[m.end.x][m.end.y] = WHITE;
+            }
+            else {
+              board[m.end.x][m.end.y] = K_WHITE;
+	    }
         }
     } 
 
@@ -267,7 +278,7 @@ enum str_result player_turn(struct player * current,
     char turn_prompt[PROMPT_LENGTH];
     char prompt[] =  {"%sIt is %s's turn.\
         Please enter a move(e.g. 2,0-3,1) [press enter or ctrl-D to\
-            quite the current game]: "};
+            quit the current game]: "};
 
 
     if ( current->col == P_RED ) 
@@ -298,43 +309,56 @@ enum str_result player_turn(struct player * current,
             /* Case 1 */
             attampt_m.end.x = attampt_m.start.x + 2;
             attampt_m.end.y = attampt_m.start.y - 2;
-            if ( is_valid_move(attampt_m, current, board) == ATTACK ) {		 
-                if ( continue_attack() ) 
-                    continue;
-                else
-                    break;
-            }	
+            if( m.start.x + 2 < BOARDHEIGHT && m.start.y - 2 >= MIN_WIDTH ) { 
+                printf("case 1: %d,%d\n", attampt_m.end.x, attampt_m.end.y);
+                if ( is_valid_move(attampt_m, current, board) == ATTACK ) {		 
+                    if ( continue_attack() ) 
+                        continue;
+                    else
+                        break;
+                }	
+            }
 
             /* Case 2 */
-            attampt_m.end.x = attampt_m.start.x + 2;
-            attampt_m.end.y = attampt_m.start.y + 2;
-            if ( is_valid_move(attampt_m, current, board) == ATTACK ) {
-                if ( continue_attack() ) 
-                    continue;
-                else
-                    break; 
+               
+	    attampt_m.end.x = attampt_m.start.x + 2;
+	    attampt_m.end.y = attampt_m.start.y + 2;
+            if( m.start.x + 2 < BOARDHEIGHT && m.start.y + 2 < BOARDWIDTH ) {
+                printf("case 2: %d,%d\n", attampt_m.end.x, attampt_m.end.y);
+                if ( is_valid_move(attampt_m, current, board) == ATTACK ) {
+                    if ( continue_attack() ) 
+                        continue;
+                    else
+                        break; 
 
+                }
             }		
 
             /* Case 3 */
             attampt_m.end.x = attampt_m.start.x - 2;
             attampt_m.end.y = attampt_m.start.y - 2;
-            if ( is_valid_move(attampt_m, current, board) == ATTACK ) {  
-                if ( continue_attack() ) 
-                    continue;
-                else
-                    break;  	   
+            if( m.start.x - 2 >= MIN_WIDTH && m.start.y - 2 >= MIN_WIDTH ) {
+                printf("case 3: %d,%d\n", attampt_m.end.x, attampt_m.end.y); 
+                if ( is_valid_move(attampt_m, current, board) == ATTACK ) {  
+                    if ( continue_attack() ) 
+                        continue;
+                    else
+                        break;  	   
+                }
             }
 
             /* Case 4 */
             attampt_m.end.x = attampt_m.start.x - 2;
             attampt_m.end.y = attampt_m.start.y + 2;
-            if ( is_valid_move(attampt_m, current, board) == ATTACK ) {  
-                if ( continue_attack() ) 
-                    continue;
-                else
-                    break;  	   
-            }  
+            if( m.start.x - 2 >= MIN_WIDTH && m.start.y + 2 < BOARDWIDTH ) { 
+		printf("case 4: %d,%d\n", attampt_m.end.x, attampt_m.end.y);
+                if ( is_valid_move(attampt_m, current, board) == ATTACK ) {  
+                    if ( continue_attack() ) 
+                        continue;
+                    else
+                        break;  	   
+                }  
+            }
         } 
 
         break;  
@@ -353,12 +377,12 @@ enum move_type is_valid_move(struct move next_move,
     /* General validation */
 
     /* if ori valid */
-    if ( next_move.start.x > BOARDWIDTH || next_move.start.x < MIN_WIDTH ) {
+    if ( next_move.start.x >= BOARDWIDTH || next_move.start.x < MIN_WIDTH ) {
         printf("Please input the move less than the maximum range ");
         return INVALID;
     }
 
-    if ( next_move.start.y > BOARDHEIGHT || next_move.start.y < MIN_WIDTH ) {
+    if ( next_move.start.y >= BOARDHEIGHT || next_move.start.y < MIN_WIDTH ) {
         printf("Please input the move less than the maximum range ");
         return INVALID;
     }
@@ -378,24 +402,26 @@ enum move_type is_valid_move(struct move next_move,
 
 
     /* if dst valid */
+    if ( next_move.end.x >= BOARDWIDTH || next_move.end.x < MIN_WIDTH ) {
+        printf("Please input the move less than the maximum range.\n");
+        return INVALID;
+    }
+    if ( next_move.end.y >= BOARDHEIGHT || next_move.end.y < MIN_WIDTH ) {
+        printf("Please input the move less than the maximum range.\n");
+        return INVALID;
+    }
+
     if ( board[next_move.end.x][next_move.end.y] != EMPTY ) {
         printf("There is token at your destination\n");
         return INVALID;
     }
 
-    if ( next_move.end.x > BOARDWIDTH || next_move.end.x < MIN_WIDTH ) {
-        printf("Please input the move less than the maximum range.\n");
-        return INVALID;
-    }
-    if ( next_move.end.y > BOARDHEIGHT || next_move.end.y < MIN_WIDTH ) {
-        printf("Please input the move less than the maximum range.\n");
-        return INVALID;
-    }
+
 
 
     /* Player Validation  */
 
-    if ( current->col == P_RED && board[next_move.start.x][next_move.start.y] == RED ) {
+    if ( current->col == P_RED && ( board[next_move.start.x][next_move.start.y] == RED || board[next_move.start.x][next_move.start.y] == K_RED) ) {
         /* Calculate the sample dsts */
         sample_dst1.x = next_move.start.x + 1;
         sample_dst1.y = next_move.start.y - 1;
@@ -407,7 +433,7 @@ enum move_type is_valid_move(struct move next_move,
         attack_sample_dst2.x = next_move.start.x + 2;
         attack_sample_dst2.y = next_move.start.y + 2;
     }
-    else if (current->col == P_WHITE && board[next_move.start.x][next_move.start.y] == WHITE) {
+    else if (current->col == P_WHITE && ( board[next_move.start.x][next_move.start.y] == WHITE || board[next_move.start.x][next_move.start.y] == K_WHITE)) {
         /* Calculate the sample dsts */
         sample_dst1.x = next_move.start.x - 1 ;
         sample_dst1.y = next_move.start.y - 1;  
@@ -458,8 +484,10 @@ enum move_type is_valid_move(struct move next_move,
             }
 
             /* sample 1 */
-            if ( (board[next_move.start.x][next_move.start.y] == RED && board[sample_dst1.x][sample_dst1.y] == WHITE) ||
-                    (board[next_move.start.x][next_move.start.y] == WHITE && board[sample_dst1.x][sample_dst1.y] == RED) ){
+            if ((( board[next_move.start.x][next_move.start.y] == RED || board[next_move.start.x][next_move.start.y] == K_RED )
+                        &&  (board[sample_dst1.x][sample_dst1.y] == WHITE ||board[sample_dst1.x][sample_dst1.y] == K_WHITE)) ||
+                    ( (board[next_move.start.x][next_move.start.y] == WHITE || board[next_move.start.x][next_move.start.y] == K_WHITE  ) 
+                      && (board[sample_dst1.x][sample_dst1.y] == RED || board[sample_dst1.x][sample_dst1.y] == K_RED )) ){
                 return ATTACK;
             }
             else {
@@ -478,8 +506,10 @@ enum move_type is_valid_move(struct move next_move,
             /* sample 2 */
             if ( next_move.end.x == attack_sample_dst2.x && next_move.end.y == attack_sample_dst2.y ) {
 
-                if ( (board[next_move.start.x][next_move.start.y] == RED && board[sample_dst2.x][sample_dst2.y] == WHITE) ||
-                        (board[next_move.start.x][next_move.start.y] == WHITE && board[sample_dst2.x][sample_dst2.y] == RED) ){
+                if ( (( board[next_move.start.x][next_move.start.y] == RED || board[next_move.start.x][next_move.start.y] == K_RED )
+                            &&  (board[sample_dst2.x][sample_dst2.y] == WHITE ||board[sample_dst2.x][sample_dst2.y] == K_WHITE)) ||
+                        ( (board[next_move.start.x][next_move.start.y] == WHITE || board[next_move.start.x][next_move.start.y] == K_WHITE  ) 
+                          && (board[sample_dst2.x][sample_dst2.y] == RED || board[sample_dst2.x][sample_dst2.y] == K_RED )) ){
                     return ATTACK;
                 }
                 else {
@@ -503,8 +533,10 @@ enum move_type is_valid_move(struct move next_move,
                     return INVALID;
                 }   
 
-                if ( (board[next_move.start.x][next_move.start.y] == RED && board[sample_dst3.x][sample_dst3.y] == WHITE) ||
-                        (board[next_move.start.x][next_move.start.y] == WHITE && board[sample_dst3.x][sample_dst3.y] == RED) ){
+                if ( (( board[next_move.start.x][next_move.start.y] == RED || board[next_move.start.x][next_move.start.y] == K_RED )
+                            &&  (board[sample_dst3.x][sample_dst3.y] == WHITE ||board[sample_dst3.x][sample_dst3.y] == K_WHITE)) ||
+                        ( (board[next_move.start.x][next_move.start.y] == WHITE || board[next_move.start.x][next_move.start.y] == K_WHITE  ) 
+                          && (board[sample_dst3.x][sample_dst3.y] == RED || board[sample_dst3.x][sample_dst3.y] == K_RED )) ){
                     return ATTACK;
                 }
                 else {
@@ -519,8 +551,10 @@ enum move_type is_valid_move(struct move next_move,
                     return INVALID;
                 }   
 
-                if ( (board[next_move.start.x][next_move.start.y] == RED && board[sample_dst4.x][sample_dst4.y] == WHITE) ||
-                        (board[next_move.start.x][next_move.start.y] == WHITE && board[sample_dst4.x][sample_dst4.y] == RED) ){
+                if ( (( board[next_move.start.x][next_move.start.y] == RED || board[next_move.start.x][next_move.start.y] == K_RED )
+                            &&  (board[sample_dst4.x][sample_dst4.y] == WHITE ||board[sample_dst4.x][sample_dst4.y] == K_WHITE)) ||
+                        ( (board[next_move.start.x][next_move.start.y] == WHITE || board[next_move.start.x][next_move.start.y] == K_WHITE  ) 
+                          && (board[sample_dst4.x][sample_dst4.y] == RED || board[sample_dst4.x][sample_dst4.y] == K_RED )) ){
                     return ATTACK;
                 }
                 else {
@@ -574,14 +608,14 @@ BOOLEAN test_for_winner(struct player * next_player,
     BOOLEAN has_moves = TRUE;
     int i, j;
     enum move_type res;
-    Move next_move;
+    Move next_move = {.start.x = 0, .start.y = 0, .end.x = 0, .end.y = 0 };
 
     if ( next_player->col == P_RED ) {
         for(i=0; i<BOARDWIDTH; i++) {
             for(j=0; j<BOARDHEIGHT; j++) {
                 if (board[i][j] == RED || board[i][j] == K_RED) {
                     /* case 1 */
-                    if ( i+1 <= BOARDWIDTH-1 && j-1 >= MIN_WIDTH ) {
+                    if ( i+1 < BOARDWIDTH && j-1 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
                         next_move.end.x = i + 1;
@@ -629,7 +663,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                 if ( board[i][j] == K_RED) {
 
                     /* case 5 */    
-			if ( i-1 >= MIN_WIDTH && j-1 >= MIN_WIDTH ) {
+                    if ( i-1 >= MIN_WIDTH && j-1 >= MIN_WIDTH ) {
                         next_move.start.x = i;
                         next_move.start.y = j;
 
@@ -674,6 +708,9 @@ BOOLEAN test_for_winner(struct player * next_player,
                     }
 
                 }
+                if ( j != BOARDHEIGHT ) {
+                    break;
+                }
             } /* end for */
 
             if ( i == BOARDWIDTH && j == BOARDHEIGHT ) {
@@ -685,7 +722,9 @@ BOOLEAN test_for_winner(struct player * next_player,
     else {
         for(i=0; i<BOARDWIDTH; i++) {
             for(j=0; j<BOARDHEIGHT; j++) {
-                if (board[i][j] == WHITE) {
+                if (board[i][j] == WHITE || board[i][j] == K_WHITE) {
+
+                    printf("pos: %d %d\n\n", i, j);
                     /* case 1 */    
                     if ( i-1 >= MIN_WIDTH && j-1 >= MIN_WIDTH ) {
                         next_move.start.x = i;
@@ -693,6 +732,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i - 1;
                         next_move.end.y = j - 1;
                         res = is_valid_move(next_move, next_player, board);
+                
                         if( res == NORMAL ) 
                             break;  
                     }
@@ -704,6 +744,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i - 1;
                         next_move.end.y = j + 1;
                         res = is_valid_move(next_move, next_player, board);
+                    
                         if( res == NORMAL ) 
                             break;    
                     }
@@ -715,6 +756,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i - 2;
                         next_move.end.y = j - 2;
                         res = is_valid_move(next_move, next_player, board);
+                      
                         if( res == ATTACK ) 
                             break;  
                     }
@@ -726,6 +768,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i - 2;
                         next_move.end.y = j + 2;
                         res = is_valid_move(next_move, next_player, board);
+                     
                         if( res == ATTACK ) 
                             break;  
                     }
@@ -740,6 +783,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i + 1;
                         next_move.end.y = j - 1;
                         res = is_valid_move(next_move, next_player, board);
+                   
                         if( res == NORMAL  ) 
                             break;
                     }
@@ -751,6 +795,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i + 1;
                         next_move.end.y = j + 1;
                         res = is_valid_move(next_move, next_player, board);
+                       
                         if( res == NORMAL ) 
                             break;
                     }
@@ -762,6 +807,7 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i + 2;
                         next_move.end.y = j - 2;
                         res = is_valid_move(next_move, next_player, board);
+                     
                         if( res == ATTACK  ) 
                             break;
                     }
@@ -774,15 +820,17 @@ BOOLEAN test_for_winner(struct player * next_player,
                         next_move.end.x = i + 2;
                         next_move.end.y = j + 2;
                         res = is_valid_move(next_move, next_player, board);
+                       
                         if( res == ATTACK ) 
                             break;
                     }
 
                 } /* end if */
 
-
-
             } /* end nested for */
+            if ( j != BOARDHEIGHT ) {
+                break;
+            }
         } /* end for */
         if ( i == BOARDWIDTH && j == BOARDHEIGHT ) {
             return FALSE;
