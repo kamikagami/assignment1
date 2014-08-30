@@ -15,7 +15,7 @@
 
 /* assign colour */
 Colour get_colour() {
-    static int res = NULL;
+    static int res = P_RED;
     if ( res == P_RED ) {
         res = P_WHITE;
         return res;  
@@ -65,11 +65,11 @@ void play_game(char * player_one, char * player_two,
         while(TRUE) {
             if (p1.col  == P_RED ) {
                 current = P1;
-                res = player_turn(&p1, &board);
+                res = player_turn(&p1, board);
             }
             else {
                 current = P2;
-                res = player_turn(&p2, &board);
+                res = player_turn(&p2, board);
             }
 
             if ( res == SUCCESS )
@@ -81,12 +81,12 @@ void play_game(char * player_one, char * player_two,
         while(TRUE) {
             if ( current == P1 ) {
                 /* if current player is p1 then it's p2's turn */
-                res = player_turn(&p2, &board);
+                res = player_turn(&p2, board);
                 current = P2;
             }  
             else {
                 /* if current player is p2 then it's p1's turn */
-                res = player_turn(&p1, &board);
+                res = player_turn(&p1, board);
                 current  = P1;	
             }
 
@@ -105,11 +105,11 @@ void play_game(char * player_one, char * player_two,
             }
 
             if ( current == P1 ) {
-                if ( !test_for_winner(&p2, &board) )  
+                if ( !test_for_winner(&p2, board) )  
                     break;
             }
             else {
-                if ( !test_for_winner(&p1, &board) )  
+                if ( !test_for_winner(&p1, board) )  
                     break;
             }
 
@@ -140,7 +140,6 @@ BOOLEAN get_pos(char *loc, Move *m) {
     char *tok = NULL;
     char ori_str[STRING_INPUT_LENGTH+1];
     char dst_str[STRING_INPUT_LENGTH+1];
-    char *current_player;
     char *dash = {"-"};
     char *comma = {","}; 
 
@@ -608,7 +607,7 @@ BOOLEAN test_for_winner(struct player * next_player,
     BOOLEAN has_moves = TRUE;
     int i, j;
     enum move_type res;
-    Move next_move = {.start.x = 0, .start.y = 0, .end.x = 0, .end.y = 0 };
+    Move next_move;
 
     if ( next_player->col == P_RED ) {
         for(i=0; i<BOARDWIDTH; i++) {

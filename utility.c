@@ -101,7 +101,7 @@ int getString(char* string, unsigned length, char* prompt)
 		  /* if Ctrl+D is in the user input, then return a string "\D" */
 		  string[0] = CTRL_D;
 		  string[1] = '\0';
-		  return NULL;
+		  return -1;
 		}
 
         /* A string that doesn't have a newline character is too long. */

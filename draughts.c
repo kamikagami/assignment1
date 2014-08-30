@@ -12,8 +12,6 @@
 int main (int argc, char *argv[])
 {
     struct result scoreboard[SCOREBOARDSIZE];
-    Player player1;
-    Player player2;
     Result res;
     int input = 0;
     char replay[INPUT_LEN+1];
@@ -26,7 +24,7 @@ int main (int argc, char *argv[])
     char *menuOpt[MENU_OPTIONS] = {
 		 "Play Game", "Display Winners", "Reset scoreboard", "Quit"};
 	char *inputPrompt = {"Please select (1-4): "};
-	enum cell_contents board[BOARDWIDTH][BOARDHEIGHT];
+	
 	BOOLEAN play = FALSE;
 	
 	init_scoreboard(scoreboard);
